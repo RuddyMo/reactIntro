@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Mode clair (light mode) - Navbar blanche */
+.bg-white {
+    background-color: #ffffff; /* Blanc pour la navbar */
+}
+
+/* Mode sombre (dark mode) - Navbar foncée */
+.dark .bg-gray-900 {
+    background-color: #1a202c; /* Gris très foncé pour le mode sombre */
+}
+
+/* Couleurs de texte pour le mode clair */
+.text-gray-800 {
+    color: #2d3748; /* Gris foncé pour le texte en mode clair */
+}
+
+/* Couleurs de texte pour le mode sombre */
+.dark .text-white {
+    color: #ffffff; /* Blanc pour le texte en mode sombre */
+}
+
+.dark .text-gray-400 {
+    color: #9ca3af; /* Gris clair pour le texte en mode sombre */
+}
+
