@@ -2,6 +2,8 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import logo from '../assets/logo.webp';
+
 
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', current: false },
@@ -54,12 +56,11 @@ const Navbar = () => {
     };
 
     return (
-        <Disclosure as="nav" className="bg-white dark:bg-gray-900">
+        <Disclosure as="nav" className="bg-white dark:bg-gray-900 border-b-2 ">
             {({ open }) => (
                 <>
-                    <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+                    <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
                         <div className="relative flex h-16 items-center justify-between">
-                            {/* Mobile menu button */}
                             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-800 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800 dark:focus:ring-white">
                                     <span className="sr-only">Open main menu</span>
@@ -71,13 +72,15 @@ const Navbar = () => {
                                 </Disclosure.Button>
                             </div>
 
-                            <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                            <div className="flex flex-1 items-center justify-center sm:justify-start">
                                 <div className="flex flex-shrink-0 items-center">
-                                    <img
-                                        className="h-8 w-auto"
-                                        src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
-                                        alt="Your Company"
-                                    />
+                                    <Link to={"/dashboard"}>
+                                        <img
+                                            className="h-10 w-auto rounded-lg"
+                                            src={logo}
+                                            alt="Your Company"
+                                        />
+                                    </Link>
                                 </div>
                                 <div className="hidden sm:ml-6 sm:block">
                                     <div className="flex space-x-4">
@@ -101,14 +104,6 @@ const Navbar = () => {
                                 className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 gap-3">
                                 {isAuthenticated ? (
                                     <>
-                                        <button
-                                            type="button"
-                                            className="relative rounded-full bg-white dark:bg-gray-900 p-1 text-gray-800 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 dark:focus:ring-white"
-                                        >
-                                            <span className="sr-only">View notifications</span>
-                                            <BellIcon className="h-6 w-6" aria-hidden="true"/>
-                                        </button>
-
                                         <Menu as="div" className="relative">
                                             <div>
                                                 <Menu.Button

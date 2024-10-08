@@ -1,7 +1,8 @@
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import logo from '../assets/logo.webp';
 
 const Login = () => {
     const [error, setError] = useState(null);
@@ -43,11 +44,13 @@ const Login = () => {
         <div className="flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
             <div className="bg-white dark:bg-gray-800 p-8 rounded-lg w-full max-w-md transition-colors duration-300">
                 <div className="flex justify-center mb-6">
-                    <img
-                        src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Logo"
-                        className="h-12 w-auto"
-                    />
+                    <Link to={"/dashboard"}>
+                        <img
+                            src={logo}
+                            alt="Logo"
+                            className="h-16 w-auto rounded-lg"
+                        />
+                    </Link>
                 </div>
                 <h2 className="text-center text-2xl font-bold text-gray-900 dark:text-white mb-6">Se connecter</h2>
                 <Formik
