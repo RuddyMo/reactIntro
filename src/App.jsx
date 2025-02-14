@@ -120,7 +120,7 @@ const Dashboard = () => {
     const [popupMessage, setPopupMessage] = useState('');
     const [gameStatus, setGameStatus] = useState('waiting');
     const [gameMessages, setGameMessages] = useState([]);
-    const [games, setGames] = useState([]); 
+    const [games, setGames] = useState([]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
