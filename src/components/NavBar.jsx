@@ -6,8 +6,7 @@ import logo from '../assets/logo.webp';
 
 
 const navigation = [
-    { name: 'Dashboard', href: '/dashboard', current: false },
-    { name: 'Profile', href: '/profile', current: false },
+    { name: 'Dashboard', href: '/', current: false },
 ];
 
 function classNames(...classes) {
@@ -52,7 +51,7 @@ const Navbar = () => {
     const handleLogout = () => {
         localStorage.removeItem('token');
         setIsAuthenticated(false);
-        navigate('/dashboard');
+        setTimeout(()=>navigate('/'),0);
     };
 
     return (
@@ -74,7 +73,7 @@ const Navbar = () => {
 
                             <div className="flex flex-1 items-center justify-center sm:justify-start">
                                 <div className="flex flex-shrink-0 items-center">
-                                    <Link to={"/dashboard"}>
+                                    <Link to={"/"}>
                                         <img
                                             className="h-10 w-auto rounded-lg"
                                             src={logo}
@@ -126,16 +125,6 @@ const Navbar = () => {
                                                 leaveTo="transform opacity-0 scale-95"
                                                 className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800"
                                             >
-                                                <Menu.Item>
-                                                    {({active}) => (
-                                                        <Link
-                                                            to="/profile"
-                                                            className={classNames(active ? 'bg-gray-100 dark:bg-gray-700' : '', 'block px-4 py-2 text-sm text-gray-800 dark:text-gray-300')}
-                                                        >
-                                                            Mon profil
-                                                        </Link>
-                                                    )}
-                                                </Menu.Item>
                                                 <Menu.Item>
                                                     {({active}) => (
                                                         <button

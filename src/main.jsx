@@ -8,8 +8,10 @@ import {
 import './index.css';
 import Login from "./views/Login.jsx";
 import Register from "./views/Register.jsx";
-import Dashboard from "./views/Dashboard.jsx";
-import AuthLayout from "./layouts/AuthLayout.jsx";
+import AuthLayout from "./layouts/AuthLayout.jsx"
+import Game from "./views/Game.jsx";
+import { SocketProvider } from "./context/SocketContext.jsx";
+import App from "./App.jsx";
 
 const isAuthenticated = () => {
     return !!localStorage.getItem('token');
@@ -18,7 +20,7 @@ const isAuthenticated = () => {
 const router = createBrowserRouter([
     {
         path: "/",
-        element: isAuthenticated() ? <Navigate to="/dashboard" /> : <Navigate to="/dashboard" />,
+        element: <App />,
     },
     {
         path: "/",
@@ -26,22 +28,24 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "register",
-                element: isAuthenticated() ? <Navigate to="/dashboard" /> : <Register />,
+                element: isAuthenticated() ? <Navigate to="/" /> : <Register />,
             },
             {
                 path: "login",
-                element: isAuthenticated() ? <Navigate to="/dashboard" /> : <Login />,
+                element: isAuthenticated() ? <Navigate to="/" /> : <Login />,
             },
         ],
     },
     {
-        path: "/dashboard",
-        element: <Dashboard />,
+        path: "/game/:gameId",
+        element: <Game />,
     },
 ]);
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <RouterProvider router={router} />
+        <SocketProvider>
+            <RouterProvider router={router} />
+        </SocketProvider>
     </StrictMode>,
 );

@@ -1,11 +1,11 @@
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useState } from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.webp';
 
 const Inscription = () => {
-    const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
     const navigate = useNavigate();
 
     const validationSchema = Yup.object({
@@ -19,7 +19,7 @@ const Inscription = () => {
     });
 
     const handleRegister = async (values, { setSubmitting }) => {
-        setError(null);
+        setSuccessMessage(null);
 
         try {
             const response = await fetch('http://localhost:3000/register', {
@@ -28,17 +28,12 @@ const Inscription = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(values),
+            }).then((data) => {
+                if (data.ok){
+                    navigate('/login', { state: { emailVerification: true } });
+                }
             });
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.error || 'Erreur d\'inscription');
-            }
-
-            navigate('/login');
-        } catch (error) {
-            setError(error.message);
         } finally {
             setSubmitting(false);
         }
@@ -48,7 +43,7 @@ const Inscription = () => {
         <div className="flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
             <div className="bg-white dark:bg-gray-800 p-8 rounded-lg w-full max-w-md transition-colors duration-300">
                 <div className="flex justify-center mb-6">
-                    <Link to={"/dashboard"}>
+                    <Link to={"/"}>
                         <img
                             src={logo}
                             alt="Logo"
@@ -74,7 +69,7 @@ const Inscription = () => {
                               isSubmitting,
                           }) => (
                             <form onSubmit={handleSubmit} className="space-y-4">
-                                {error && <div className="text-red-600 mb-4">{error}</div>}
+                                {successMessage && <div className="text-green-600 mb-4">{successMessage}</div>}
 
                                 <div>
                                     <label htmlFor="firstname" className="block text-sm font-medium text-gray-900 dark:text-gray-200">
