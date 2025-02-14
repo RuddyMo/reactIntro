@@ -66,7 +66,7 @@ const GameLogs = ({ messages }) => (
         </div>
     </div>
 );
-const ScoreBoard = ({ games = [] }) => (  // Ajout d'une valeur par défaut
+const ScoreBoard = ({ games = [], onDelete }) => (
     <div className="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
         <div className="overflow-x-auto">
             <table className="min-w-full">
@@ -77,6 +77,7 @@ const ScoreBoard = ({ games = [] }) => (  // Ajout d'une valeur par défaut
                     <th className="px-4 py-2 text-left text-sm text-gray-900 dark:text-gray-200">Joueur 2</th>
                     <th className="px-4 py-2 text-left text-sm text-gray-900 dark:text-gray-200">Gagnant</th>
                     <th className="px-4 py-2 text-left text-sm text-gray-900 dark:text-gray-200">État</th>
+                    <th className="px-4 py-2 text-left text-sm text-gray-900 dark:text-gray-200">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -87,17 +88,25 @@ const ScoreBoard = ({ games = [] }) => (  // Ajout d'une valeur par défaut
                             <td className="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{game.player1?.username || '-'}</td>
                             <td className="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{game.player2?.username || '-'}</td>
                             <td className="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">
-                                {game.winner ? game.winner.username : (game.state === 'finished' ? 'Match nul' : '-')}
+                                {game.state === 'finished' ? (game.winPlayer?.username || 'Match nul') : '-'}
                             </td>
                             <td className="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">
                                 {game.state === 'pending' ? 'En attente' :
                                     game.state === 'playing' ? 'En cours' : 'Terminée'}
                             </td>
+                            <td className="px-4 py-2 text-sm">
+                                <button
+                                    onClick={() => onDelete(game.id)}
+                                    className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+                                >
+                                    Supprimer
+                                </button>
+                            </td>
                         </tr>
                     ))
                 ) : (
                     <tr>
-                        <td colSpan="5" className="px-4 py-2 text-sm text-gray-600 dark:text-gray-300 text-center">
+                        <td colSpan="6" className="px-4 py-2 text-sm text-gray-600 dark:text-gray-300 text-center">
                             Aucune partie à afficher
                         </td>
                     </tr>
@@ -285,6 +294,41 @@ const Dashboard = () => {
         setGameStatus('playing');
         setGameMessages([]);
     };
+    const handleDeleteGame = async (gameId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/game/${gameId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            if (response.ok) {
+                setGames(prevGames => prevGames.filter(game => game.id !== gameId));
+
+                loadGames();
+            } else {
+                setError('Erreur lors de la suppression de la partie');
+            }
+        } catch (error) {
+            console.error('Erreur:', error);
+            setError('Erreur lors de la suppression de la partie');
+        }
+    };
+
+    const loadGames = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/games', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            const data = await response.json();
+            setGames(data);
+        } catch (error) {
+            console.error('Erreur lors du chargement des parties:', error);
+        }
+    };
 
     return (
         <div>
@@ -354,7 +398,7 @@ const Dashboard = () => {
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                         Historique des parties
                     </h2>
-                    <ScoreBoard games={games} />
+                    <ScoreBoard games={games} onDelete={handleDeleteGame} />
                 </div>
 
                 {error && (
